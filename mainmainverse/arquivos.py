@@ -26,7 +26,6 @@ class Conta_Bancaria:
                 self.bloqueado = True
                 print("Conta bloqueada devido a tentativas inválidas.")
 
-
     def depositar(self):
         if self.acessoLiberado:
             try:
@@ -42,7 +41,6 @@ class Conta_Bancaria:
                 self.acessoLiberado = False
         else:
             print("Acesso não liberado.")
-
 
     def sacar(self):
         if self.acessoLiberado:
@@ -60,7 +58,6 @@ class Conta_Bancaria:
         else:
             print("Acesso não liberado.")
 
-
     def extrato(self):
         if self.acessoLiberado:
             print(f"\nExtrato da conta de {self.nomeProprietario}:")
@@ -68,7 +65,6 @@ class Conta_Bancaria:
             self.acessoLiberado = False
         else:
             print("Acesso não liberado.")
-
 
     def excluir_conta(self):
         if self.acessoLiberado:
@@ -88,7 +84,6 @@ class Conta_Corrente(Conta_Bancaria):
         super().__init__(nomeProprietario, senha)
         self.tarifa = tarifa
         self.tarifaPaga = False
-
 
     def pagar_tarifa(self):
         if self.acessoLiberado:
@@ -124,7 +119,6 @@ class Conta_Conjunto(Conta_Bancaria):
                 print(f"Tarifa de R${taxa:.2f} paga com sucesso!")
             else:
                 print("Saldo insuficiente para pagar a tarifa.")
-
 
             self.acessoLiberado = False
         else:
@@ -181,3 +175,39 @@ def passar_mes():
                 f"Rendimento de R${rendimento:.2f} aplicado "
                 f"na conta de {conta.nomeProprietario}."
             )
+
+def criar_contaCorrente():
+    print("\nCriação de conta corrente")
+    nome = input("Nome do proprietário: ")
+    senha = input("Crie uma senha: ")
+    for conta in contas_bancarias:
+        if isinstance(conta, Conta_Corrente) and conta.nomeProprietario == nome:
+            print("Já existe uma conta corrente com esse nome!")
+            return
+    contas_bancarias.append(Conta_Corrente(nome, senha, 0.02))
+    print("Conta corrente criada com sucesso!")
+
+def criar_contaPoupanca():
+    print("\nCriação de conta poupança")
+    nome = input("Nome do proprietário: ")
+    senha = input("Crie uma senha: ")
+    for conta in contas_bancarias:
+        if isinstance(conta, Conta_Poupanca) and conta.nomeProprietario == nome:
+            print("Já existe uma conta poupança com esse nome!")
+            return
+    contas_bancarias.append(Conta_Poupanca(nome, senha, 0.02))
+    print("Conta poupança criada com sucesso!")
+
+def criar_contaConjunto():
+    print("\nCriação de conta conjunta")
+    nome = input("Nome do proprietário principal: ")
+    senha = input("Crie uma senha: ")
+    co_proprietario = input("Nome do primeiro co-proprietário: ")
+    for conta in contas_bancarias:
+        if isinstance(conta, Conta_Conjunto) and conta.nomeProprietario == nome:
+            print("Já existe uma conta conjunta com esse proprietário!")
+            return
+    contas_bancarias.append(
+        Conta_Conjunto(nome, senha, [co_proprietario], 0.02)
+    )
+    print("Conta conjunta criada com sucesso!")
