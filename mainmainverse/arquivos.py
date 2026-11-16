@@ -211,3 +211,26 @@ def criar_contaConjunto():
         Conta_Conjunto(nome, senha, [co_proprietario], 0.02)
     )
     print("Conta conjunta criada com sucesso!")
+    
+def localizar_conta(nome, tipo=None):
+    encontradas = []
+    for conta in contas_bancarias:
+        if conta.nomeProprietario == nome:
+            if tipo is None or isinstance(conta, tipo):
+                encontradas.append(conta)
+    if not encontradas:
+        print("Conta não encontrada.")
+        return None
+    if len(encontradas) == 1:
+        return encontradas[0]
+    print("\nForam encontradas várias contas:")
+    for i, conta in enumerate(encontradas, 1):
+        print(f"{i} - {type(conta).__name__} | Saldo: R${conta.saldo:.2f}")
+    try:
+        escolha = int(input("Escolha a conta: "))
+        if 1 <= escolha <= len(encontradas):
+            return encontradas[escolha - 1]
+    except ValueError:
+        pass
+    print("Escolha inválida.")
+    return None
