@@ -234,3 +234,70 @@ def localizar_conta(nome, tipo=None):
         pass
     print("Escolha inválida.")
     return None
+
+def menu():
+    while True:
+        print("\n===============================")
+        print("Bem-vindo ao Banco Tramontina!")
+        print("===============================")
+
+        print("""
+1 - Criar conta
+2 - Depositar
+3 - Sacar
+4 - Extrato
+5 - Excluir conta
+6 - Adicionar ou excluir co-proprietário
+7 - Pagar tarifa
+8 - Passar mês
+0 - Sair
+""")
+
+        try:
+            opcao = int(input("Digite a opção desejada: "))
+        except ValueError:
+            print("Digite uma opção numérica.")
+            continue
+        if opcao == 0:
+            break
+        elif opcao == 1:
+            try:
+                tipo_conta = int(input(
+                    "1 - Conta Corrente\n"
+                    "2 - Conta Poupança\n"
+                    "3 - Conta Conjunta\n"
+                    "Escolha: "
+                ))
+                if tipo_conta == 1:
+                    criar_contaCorrente()
+                elif tipo_conta == 2:
+                    criar_contaPoupanca()
+                elif tipo_conta == 3:
+                    criar_contaConjunto()
+                else:
+                    print("Tipo de conta inválido.")
+            except ValueError:
+                print("Digite uma opção válida.")
+           
+        elif opcao in (2, 3, 4, 5, 6, 7):
+            nome = input("Digite o nome do proprietário: ")
+
+            conta = localizar_conta(nome)
+
+            if conta is None:
+                continue
+
+            if opcao == 7 and isinstance(conta, (Conta_Corrente, Conta_Conjunto)):
+                if conta.bloqueado:
+                    print("Conta bloqueada por tentativas de senha.")
+                    continue
+                conta.liberar_acesso()
+                if conta.acessoLiberado:
+                    conta.pagar_tarifa()
+                continue
+            if conta.bloqueado:
+                print("Conta bloqueada! Entre em contato com o banco.")
+                continue
+            conta.liberar_acesso()
+            if not conta.acessoLiberado:
+                continue
