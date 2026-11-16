@@ -107,3 +107,54 @@ class Conta_Poupanca(Conta_Bancaria):
     def __init__(self, nomeProprietario, senha, rendimento):
         super().__init__(nomeProprietario, senha)
         self.rendimento = rendimento
+
+class Conta_Conjunto(Conta_Bancaria):
+    def __init__(self, nomeProprietario, senha, co_proprietarios, tarifa):
+        super().__init__(nomeProprietario, senha)
+        self.co_proprietarios = list(co_proprietarios)
+        self.tarifa = tarifa
+        self.tarifaPaga = False
+
+    def pagar_tarifa(self):
+        if self.acessoLiberado:
+            taxa = self.tarifa * self.saldo
+            if self.saldo >= taxa:
+                self.saldo -= taxa
+                self.tarifaPaga = True
+                print(f"Tarifa de R${taxa:.2f} paga com sucesso!")
+            else:
+                print("Saldo insuficiente para pagar a tarifa.")
+
+
+            self.acessoLiberado = False
+        else:
+            print("Acesso não liberado.")
+
+    def adicionar_co_proprietario(self):
+        if self.acessoLiberado:
+            novo_co_proprietario = input(
+                "Digite o nome do novo co-proprietário: "
+            ).strip()
+            if novo_co_proprietario and novo_co_proprietario not in self.co_proprietarios:
+                self.co_proprietarios.append(novo_co_proprietario)
+                print(f"{novo_co_proprietario} adicionado com sucesso!")
+            else:
+                print("Nome inválido ou já cadastrado.")
+
+            self.acessoLiberado = False
+        else:
+            print("Acesso não liberado.")
+
+    def excluir_co_proprietario(self):
+        if self.acessoLiberado:
+            co_proprietario = input(
+                "Digite o nome do co-proprietário a ser removido: "
+            )
+            if co_proprietario in self.co_proprietarios:
+                self.co_proprietarios.remove(co_proprietario)
+                print(f"{co_proprietario} removido com sucesso!")
+            else:
+                print("Co-proprietário não encontrado.")
+            self.acessoLiberado = False
+        else:
+            print("Acesso não liberado.")
