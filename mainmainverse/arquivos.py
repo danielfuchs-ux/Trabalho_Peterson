@@ -82,3 +82,24 @@ class Conta_Bancaria:
             self.acessoLiberado = False
         else:
             print("Acesso não liberado.")
+
+class Conta_Corrente(Conta_Bancaria):
+    def __init__(self, nomeProprietario, senha, tarifa):
+        super().__init__(nomeProprietario, senha)
+        self.tarifa = tarifa
+        self.tarifaPaga = False
+
+
+    def pagar_tarifa(self):
+        if self.acessoLiberado:
+            taxa = self.tarifa * self.saldo
+            if self.saldo >= taxa:
+                self.saldo -= taxa
+                self.tarifaPaga = True
+                print(f"Tarifa de R${taxa:.2f} paga com sucesso!")
+            else:
+                print("Saldo insuficiente para pagar a tarifa.")
+            self.acessoLiberado = False
+        else:
+            print("Acesso não liberado.")
+
