@@ -158,3 +158,26 @@ class Conta_Conjunto(Conta_Bancaria):
             self.acessoLiberado = False
         else:
             print("Acesso não liberado.")
+
+def passar_mes():
+    global mes
+    mes += 1
+    print(f"Passou-se um mês. Agora estamos no mês {mes}.")
+    for conta in contas_bancarias:
+        if isinstance(conta, Conta_Corrente) or isinstance(conta, Conta_Conjunto):
+            if not conta.tarifaPaga:
+                conta.bloqueado = True
+                print(
+                    f"Conta de {conta.nomeProprietario} bloqueada "
+                    "por tarifa não paga."
+                )
+            else:
+                conta.tarifaPaga = False
+                print(f"Tarifa paga na conta de {conta.nomeProprietario}.")
+        elif isinstance(conta, Conta_Poupanca):
+            rendimento = conta.saldo * conta.rendimento
+            conta.saldo += rendimento
+            print(
+                f"Rendimento de R${rendimento:.2f} aplicado "
+                f"na conta de {conta.nomeProprietario}."
+            )
