@@ -301,3 +301,54 @@ def menu():
             conta.liberar_acesso()
             if not conta.acessoLiberado:
                 continue
+
+            if opcao == 2:
+                conta.depositar()
+
+
+            elif opcao == 3:
+                conta.sacar()
+
+
+            elif opcao == 4:
+                conta.extrato()
+
+
+            elif opcao == 5:
+                conta.excluir_conta()
+
+
+            elif opcao == 6:
+                if isinstance(conta, Conta_Conjunto):
+                    acao = input(
+                        "Digite 'adicionar' ou 'excluir': "
+                    ).lower()
+                    if acao == 'adicionar':
+                        conta.adicionar_co_proprietario()
+                    elif acao == 'excluir':
+                        conta.excluir_co_proprietario()
+                    else:
+                        print("Ação inválida.")
+                        conta.acessoLiberado = False
+                else:
+                    print("Essa opção é exclusiva de contas conjuntas.")
+                    conta.acessoLiberado = False
+
+
+            elif opcao == 7:
+                print("Essa conta não possui tarifa.")
+                conta.acessoLiberado = False
+
+
+        elif opcao == 8:
+            passar_mes()
+
+
+        else:
+            print("Opção inválida!")
+
+
+menu()
+
+
+print("\nObrigado por utilizar o Banco Tramontina! Até a próxima!")
