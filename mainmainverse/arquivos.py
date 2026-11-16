@@ -103,3 +103,7 @@ class Conta_Corrente(Conta_Bancaria):
         else:
             print("Acesso não liberado.")
 
+class Conta_Poupanca(Conta_Bancaria):
+    def __init__(self, nomeProprietario, senha, rendimento):
+        super().__init__(nomeProprietario, senha)
+        self.rendimento = rendimento
